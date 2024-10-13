@@ -12,6 +12,7 @@ interface ArticleProps {
   article: Article;
 }
 
+
 export function Article({ className, article }: ArticleProps) {
   const {
     slug,
