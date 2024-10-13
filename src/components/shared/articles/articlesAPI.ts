@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Articles } from '@/types/articles';
+import type { Article } from '@/types/articles';
 
 const articlesApi = createApi({
   reducerPath: 'articlesApi',
@@ -11,8 +12,11 @@ const articlesApi = createApi({
       query: ({ limit = 20, offset = 0 }) =>
         `articles?limit=${limit}&offset=${offset}`,
     }),
+    getOneArticle: create.query<{ article: Article }, string>({
+      query: (slug) => `articles/${slug}`,
+    }),
   }),
 });
 
-export const { useGetArticlesQuery } = articlesApi;
+export const { useGetArticlesQuery, useGetOneArticleQuery } = articlesApi;
 export default articlesApi;
