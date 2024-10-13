@@ -1,10 +1,10 @@
-import { Layout } from "@/pages/Layout";
-import { PostsPage } from "@/pages/PostsPage";
-import { createBrowserRouter } from "react-router-dom";
+import { Layout } from '@/pages/Layout';
+import { PostsPage } from '@/pages/PostsPage';
+import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Layout />,
     children: [
       {

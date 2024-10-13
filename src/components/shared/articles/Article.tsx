@@ -12,7 +12,6 @@ interface ArticleProps {
   article: Article;
 }
 
-
 export function Article({ className, article }: ArticleProps) {
   const {
     slug,
@@ -24,7 +23,7 @@ export function Article({ className, article }: ArticleProps) {
     author,
   } = article;
 
-  const { username, image, following } = author;
+  const { username, image } = author;
   return (
     <li
       className={cn(

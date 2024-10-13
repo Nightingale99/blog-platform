@@ -27,7 +27,7 @@ export function Header({ className }: HeaderProps) {
       <Button className="ml-auto" variant="ghost">
         <Link to="/sign-in">Sign In</Link>
       </Button>
-      <Button variant="success" className='hover:animate-pulse'>
+      <Button variant="success" className="hover:animate-pulse">
         <Link to="/sign-up">Sign Up</Link>
       </Button>
     </header>
