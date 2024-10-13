@@ -1,5 +1,6 @@
 export type Articles = {
   articles: Article[];
+  articlesCount: number;
 };
 
 export type Article = {
