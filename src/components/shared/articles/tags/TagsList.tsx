@@ -12,8 +12,8 @@ export function TagsList({ className, tagList }: TagsListProps) {
     return null;
   }
   return (
-    <ul className={cn('flex gap-2', className)}>
-      {tagList.map((tag) => tag.trim() && <Tag key={tag} tag={tag} />)}
+    <ul className={cn('flex gap-2 overflow-auto', className)}>
+      {tagList.map((tag, ind) => tag.trim() && <Tag key={ind} tag={tag} />)}
     </ul>
   );
 }

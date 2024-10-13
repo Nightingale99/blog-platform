@@ -10,6 +10,28 @@
     src: url(/fonts/Roboto-Regular.woff2) format('woff2');
   }
 
+  *::-webkit-scrollbar {
+    opacity: 0;
+    width: 20px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: hsl(209, 100%, 55%);
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: hsl(209, 100%, 55%);
+    opacity: 1;
+  }
+
   @font-face {
     font-family: 'Inter';
     font-style: normal;

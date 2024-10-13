@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { cleanText } from './fns/cleanText';
+import Markdown from 'react-markdown';
 
 interface ArticleProps {
   className?: string;
@@ -50,11 +51,13 @@ export function Article({ className, article, full = false }: ArticleProps) {
           />
           <span>{favoritesCount}</span>
         </div>
-        <TagsList tagList={tagList.map((tag) => cleanText(tag))} />
+        <TagsList
+          tagList={tagList ? tagList.map((tag) => cleanText(tag)) : []}
+        />
         <p className="text-[12px] text-ellipsis line-clamp-2 leading-6 text-secondary-foreground font-inter">
           {cleanText(description)}
         </p>
-        {full && <p>{body}</p>}
+        {full && <Markdown className="w-[880px]">{cleanText(body)}</Markdown>}
       </div>
       <div className="flex flex-nowrap items-center">
         <div className="text-right">

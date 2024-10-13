@@ -1,6 +1,6 @@
 import { Layout } from '@/pages/Layout';
 import { OneArticlePage } from '@/pages/OneArticlePage';
-import { PostsPage } from '@/pages/PostsPage';
+import { ArticlesPage } from '@/pages/ArticlesPage';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -10,7 +10,11 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <PostsPage />,
+        element: <ArticlesPage />,
+      },
+      {
+        path: 'articles',
+        element: <ArticlesPage />,
       },
       {
         path: 'articles/:slug',

@@ -9,7 +9,7 @@ export function Tag({ className, tag }: TagProps) {
   return (
     <li
       className={cn(
-        'border border-secondary rounded-sm w-fit px-1 text-secondary text-ellipsis line-clamp-1',
+        'border border-secondary rounded-sm min-w-fit px-1 text-secondary text-ellipsis line-clamp-1',
         className,
       )}
     >
