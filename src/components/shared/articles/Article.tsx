@@ -57,7 +57,7 @@ export function Article({ className, article, full = false }: ArticleProps) {
         <p className="text-[12px] text-ellipsis line-clamp-2 leading-6 text-secondary-foreground font-inter">
           {cleanText(description)}
         </p>
-        {full && <Markdown className="w-[880px]">{cleanText(body)}</Markdown>}
+        {full && <Markdown className="w-[880px]">{body}</Markdown>}
       </div>
       <div className="flex flex-nowrap items-center">
         <div className="text-right">

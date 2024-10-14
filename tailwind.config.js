@@ -64,6 +64,8 @@ export default {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         success: 'hsl(var(--success))',
+        placeholder: 'hsl(var(--placeholder))',
+        border: 'hsl(var(--border))',
         hover: 'hsl(var(--text-hover))',
         card: {
           DEFAULT: 'hsl(var(--card))',

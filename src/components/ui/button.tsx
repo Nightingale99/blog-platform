@@ -9,9 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default:
+          'bg-primary text-primary-foreground hover:bg-primary hover:transform hover:scale-105',
         success:
-          'border border-success rounded-md hover:bg-green-100 hover:transform hover:scale-105 bg-success/90 text-success text-[18px] px-5 py-2',
+          'border border-success rounded-md hover:bg-green-100 hover:transform hover:scale-105 bg-success/90 text-success text-[18px] px-5 py-2 transition-all duration-300',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:

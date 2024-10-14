@@ -24,12 +24,12 @@ export function Header({ className }: HeaderProps) {
           Realworld Blog
         </h1>
       </Link>
-      <Button className="ml-auto" variant="ghost">
-        <Link to="/sign-in">Sign In</Link>
-      </Button>
-      <Button variant="success" className="hover:animate-pulse">
-        <Link to="/sign-up">Sign Up</Link>
-      </Button>
+      <Link className="ml-auto" to="/sign-in">
+        <Button variant="ghost">Войти</Button>
+      </Link>
+      <Link to="/sign-up">
+        <Button variant="success">Регистрация</Button>
+      </Link>
     </header>
   );
 }
