@@ -47,7 +47,6 @@ const userApi = createApi({
           Authorization: `Bearer ${token}`,
         },
       }),
-      keepUnusedDataFor: 5,
       providesTags: ['User'],
     }),
     updateUser: create.mutation<

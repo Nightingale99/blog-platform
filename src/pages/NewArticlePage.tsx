@@ -4,7 +4,7 @@ import { ArticleForm } from '@/components/shared/articles/ArticleForm/ArticleFor
 export function NewArticlePage() {
   return (
     <Container className="max-w-[938px]">
-      <ArticleForm />
+      <ArticleForm mode="create" />
     </Container>
   );
 }

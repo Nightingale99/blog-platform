@@ -43,6 +43,21 @@ const articlesApi = createApi({
       }),
       invalidatesTags: ['Article'],
     }),
+    updateArticle: create.mutation<
+      Article,
+      { slug: string; body: ArticleFormValues; token: string }
+    >({
+      query: ({ slug, body, token }) => ({
+        url: `articles/${slug}`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ article: body }),
+      }),
+      invalidatesTags: ['Article'],
+    }),
   }),
 });
 
@@ -51,5 +66,6 @@ export const {
   useGetOneArticleQuery,
   useCreateArticleMutation,
   useDeleteArticleMutation,
+  useUpdateArticleMutation,
 } = articlesApi;
 export default articlesApi;

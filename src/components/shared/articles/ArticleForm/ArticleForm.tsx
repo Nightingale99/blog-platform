@@ -11,15 +11,17 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   useCreateArticleMutation,
   useGetOneArticleQuery,
+  useUpdateArticleMutation,
 } from '../articlesAPI';
 import { toast } from 'sonner';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { articleFormSchema, ArticleFormValues } from './article-form-schema';
+import { Spinner } from '@/components/ui/spinner';
 
 interface ArticleFormProps {
   className?: string;
@@ -27,26 +29,27 @@ interface ArticleFormProps {
 }
 
 export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
-  const form = useForm<ArticleFormValues>({
-    resolver: zodResolver(articleFormSchema),
-    defaultValues: {
-      tags: [],
-    },
-  });
-
   const [createArticle] = useCreateArticleMutation();
+
+  const [updateArticle] = useUpdateArticleMutation();
 
   const location = useLocation();
 
-  const { data: currentArticle } = useGetOneArticleQuery(
-    location.state.article.slug,
+  const { data: currentArticle, isLoading } = useGetOneArticleQuery(
+    location.pathname.split('/')[2],
+    { skip: mode === 'create' },
   );
-
-  console.log(currentArticle);
 
   const [tags, setTags] = useState<string[]>(['']);
 
   const navigate = useNavigate();
+
+  const form = useForm<ArticleFormValues>({
+    resolver: zodResolver(articleFormSchema),
+    defaultValues: {
+      tagList: currentArticle?.article?.tagList || [''],
+    },
+  });
 
   async function onFormSubmit(data: ArticleFormValues) {
     const token = localStorage.getItem('token');
@@ -54,11 +57,37 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
       toast('Необходимо авторизоваться');
       return;
     }
-    const response = await createArticle({ body: data, token: token });
+    const response =
+      mode === 'create'
+        ? await createArticle({ body: data, token: token })
+        : await updateArticle({
+            slug: currentArticle!.article.slug,
+            body: data,
+            token: token,
+          });
     if ('data' in response) {
-      toast('Статья успешно создана');
+      toast(mode === 'create' ? 'Статья успешно создана' : 'Статья обновлена');
       navigate('/');
     }
+  }
+
+  useEffect(() => {
+    if (currentArticle) {
+      setTags(
+        Array.from(
+          { length: currentArticle?.article?.tagList.length || 0 },
+          () => '',
+        ),
+      );
+      form.setValue('tagList', currentArticle?.article?.tagList || ['']);
+      form.setValue('title', currentArticle?.article?.title || '');
+      form.setValue('description', currentArticle?.article?.description || '');
+      form.setValue('body', currentArticle?.article?.body || '');
+    }
+  }, [currentArticle, form]);
+
+  if (mode === 'edit' && isLoading) {
+    return <Spinner size="large" />;
   }
 
   return (
@@ -80,7 +109,7 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
             <FormItem>
               <FormLabel>Название статьи</FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input placeholder="Название" type="text" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -94,7 +123,7 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
             <FormItem>
               <FormLabel>Короткое описание</FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input placeholder="Описание" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -125,7 +154,7 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
         )}
         {tags.map((_, ind) => (
           <FormField
-            name={`tags.${ind}`}
+            name={`tagList.${ind}`}
             control={form.control}
             key={ind}
             render={({ field }) => (
@@ -146,13 +175,21 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
                   className="text-destructive border-destructive"
                   onClick={() => {
                     setTags((prev) => prev.filter((_, i) => i !== ind));
+                    form.reset({
+                      ...form.getValues(),
+                      tagList: form
+                        .getValues()
+                        .tagList.filter((_, i) => i !== ind),
+                    });
                   }}
                 >
                   Удалить
                 </Button>
                 {ind + 1 === tags.length && (
                   <Button
-                    onClick={() => setTags((prev) => [...prev, ''])}
+                    onClick={() => {
+                      setTags((prev) => [...prev, '']);
+                    }}
                     variant="tag"
                   >
                     Добавить тег

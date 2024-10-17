@@ -27,11 +27,11 @@ export const articleFormSchema = z.object({
     .max(5000, {
       message: 'Текст статьи должен быть не более 5000 символов в длину',
     }),
-  tags: z.array(
+  tagList: z.array(
     z
       .string({ required_error: 'Нельзя отправить пустой тег' })
-      .min(3, { message: 'Длина тега не может быть меньше 1 символа' })
-      .max(20, { message: 'Длина тега не может быть больше 20 символов' }),
+      .min(3, { message: 'Длина тега не может быть меньше 3 символов' })
+      .max(40, { message: 'Длина тега не может быть больше 40 символов' }),
   ),
 });
 export type ArticleFormValues = z.infer<typeof articleFormSchema>;
