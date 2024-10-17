@@ -9,7 +9,7 @@ export interface UserResponse {
     /**
      * The user's email address.
      */
-    email: string;
+    email?: string;
     /**
      * The user's JSON Web Token.
      */
@@ -17,24 +17,53 @@ export interface UserResponse {
     /**
      * The user's username.
      */
-    username: string;
+    username?: string;
     /**
      * The user's bio.
      */
-    bio: string | null;
+    bio?: string;
     /**
      * The user's image URL.
      */
-    image: string | null;
+    image?: string;
   };
 }
 
-export type NewUserResponse = {
+export type RegisterUserResponse = {
   user: {
     email: string;
     token: string;
     username: string;
-    bio: string | null;
-    image: string | null;
+  };
+};
+
+export type SignInUserInput = {
+  user: {
+    email: string;
+    password: string;
+  };
+};
+
+export type SignUpUserInput = {
+  user: {
+    username: string;
+    email: string;
+    password: string;
+  };
+};
+
+export type SignUpErrors = {
+  errors: {
+    email: string;
+    username: string;
+  };
+};
+
+export type UpdateProfileInput = {
+  user: {
+    username?: string;
+    email?: string;
+    bio?: string;
+    image?: string;
   };
 };

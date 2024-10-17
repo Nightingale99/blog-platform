@@ -4,6 +4,11 @@ import { ArticlesPage } from '@/pages/ArticlesPage';
 import { createBrowserRouter } from 'react-router-dom';
 import { SignInPage } from '@/pages/SignInPage';
 import { SignUpPage } from '@/pages/SignUpPage';
+import { ProfilePage } from '@/pages/ProfilePage';
+import { AuthRequired } from './HOC/AuthRequired';
+import { UnAuthRequired } from './HOC/UnAuthRequired';
+import { NewArticlePage } from '@/pages/NewArticlePage';
+import { ArticleEditPage } from '@/pages/ArticleEditPage';
 
 export const router = createBrowserRouter([
   {
@@ -23,12 +28,41 @@ export const router = createBrowserRouter([
         element: <OneArticlePage />,
       },
       {
+        path: 'articles/:slug/edit',
+        element: <ArticleEditPage />,
+      },
+      {
         path: 'sign-in',
-        element: <SignInPage />,
+        element: (
+          <UnAuthRequired errorMessage="Вы уже вошли">
+            <SignInPage />
+          </UnAuthRequired>
+        ),
       },
       {
         path: 'sign-up',
-        element: <SignUpPage />,
+        element: (
+          <UnAuthRequired errorMessage="Вы уже зарегистрированы">
+            <SignUpPage />
+          </UnAuthRequired>
+        ),
+      },
+      {
+        path: 'profile',
+
+        element: (
+          <AuthRequired errorMessage="Редактировать профиль могут только зарегистрированные пользователи">
+            <ProfilePage />
+          </AuthRequired>
+        ),
+      },
+      {
+        path: '/new-article',
+        element: (
+          <AuthRequired errorMessage="Создавать статьи могут только зарегистрированные пользователи">
+            <NewArticlePage />
+          </AuthRequired>
+        ),
       },
     ],
   },

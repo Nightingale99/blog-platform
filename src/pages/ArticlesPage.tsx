@@ -17,7 +17,12 @@ export function ArticlesPage() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetArticlesQuery({ limit: 10, offset: pageNumber * 10 - 10 });
+  } = useGetArticlesQuery(
+    { limit: 10, offset: pageNumber * 10 - 10 },
+    {
+      pollingInterval: 10000,
+    },
+  );
 
   const total = isSuccess ? articles.articlesCount : 0;
 
@@ -27,7 +32,7 @@ export function ArticlesPage() {
       {isError && (
         <Alert variant="destructive" className="bg-popover">
           <Ban className="h-4 w-4" />
-          <AlertTitle>Ошибка на сервере</AlertTitle>
+          <AlertTitle>Ошибка</AlertTitle>
           <AlertDescription>Попробуйте еще раз чуть позднее</AlertDescription>
         </Alert>
       )}
@@ -35,7 +40,7 @@ export function ArticlesPage() {
         <>
           <ArticlesList articles={articles} />
           <Pagination
-            className="mt-6"
+            className="my-6"
             total={total}
             pageSize={10}
             hideOnSinglePage

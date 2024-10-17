@@ -10,7 +10,7 @@ export function OneArticlePage() {
   const { slug } = useParams();
   const { data, isLoading, isError, isSuccess } = useGetOneArticleQuery(slug!);
   return (
-    <Container className="max-w-[938px]">
+    <Container className="max-w-[938px] mb-4">
       {isLoading && <Spinner size="large">Загрузка статьи...</Spinner>}
       {isError && (
         <Alert variant="destructive" className="bg-popover">
