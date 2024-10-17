@@ -8,7 +8,12 @@ import { useParams } from 'react-router-dom';
 
 export function OneArticlePage() {
   const { slug } = useParams();
-  const { data, isLoading, isError, isSuccess } = useGetOneArticleQuery(slug!);
+
+  const token = localStorage.getItem('token');
+  const { data, isLoading, isError, isSuccess } = useGetOneArticleQuery({
+    slug: slug!,
+    token: token,
+  });
   return (
     <Container className="max-w-[938px] mb-4">
       {isLoading && <Spinner size="large">Загрузка статьи...</Spinner>}

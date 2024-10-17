@@ -9,13 +9,30 @@ const articlesApi = createApi({
   }),
   tagTypes: ['Article'],
   endpoints: (create) => ({
-    getArticles: create.query<Articles, { limit?: number; offset?: number }>({
-      query: ({ limit = 20, offset = 0 }) =>
-        `articles?limit=${limit}&offset=${offset}`,
+    getArticles: create.query<
+      Articles,
+      { limit?: number; offset?: number; token: string | null }
+    >({
+      query: ({ limit = 20, offset = 0, token = '' }) => ({
+        url: `articles?limit=${limit}&offset=${offset}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
       providesTags: ['Article'],
     }),
-    getOneArticle: create.query<{ article: Article }, string>({
-      query: (slug) => `articles/${slug}`,
+    getOneArticle: create.query<
+      { article: Article },
+      { slug: string; token: string | null }
+    >({
+      query: ({ slug, token }) => ({
+        url: `articles/${slug}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
       providesTags: ['Article'],
     }),
     createArticle: create.mutation<
@@ -58,6 +75,29 @@ const articlesApi = createApi({
       }),
       invalidatesTags: ['Article'],
     }),
+    favoriteArticle: create.mutation<Article, { slug: string; token: string }>({
+      query: ({ slug, token }) => ({
+        url: `articles/${slug}/favorite`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ['Article'],
+    }),
+    unFavoriteArticle: create.mutation<
+      Article,
+      { slug: string; token: string }
+    >({
+      query: ({ slug, token }) => ({
+        url: `articles/${slug}/favorite`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ['Article'],
+    }),
   }),
 });
 
@@ -67,5 +107,7 @@ export const {
   useCreateArticleMutation,
   useDeleteArticleMutation,
   useUpdateArticleMutation,
+  useFavoriteArticleMutation,
+  useUnFavoriteArticleMutation,
 } = articlesApi;
 export default articlesApi;

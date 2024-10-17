@@ -12,6 +12,7 @@ export type Article = {
   createdAt: string;
   updatedAt: string;
   favoritesCount: number;
+  favorited?: boolean;
   author: Author;
 };
 export type Tags = string[];

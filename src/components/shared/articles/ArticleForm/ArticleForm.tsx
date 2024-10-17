@@ -35,8 +35,10 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
 
   const location = useLocation();
 
+  const token = localStorage.getItem('token');
+
   const { data: currentArticle, isLoading } = useGetOneArticleQuery(
-    location.pathname.split('/')[2],
+    { slug: location.pathname.split('/')[2], token: token },
     { skip: mode === 'create' },
   );
 

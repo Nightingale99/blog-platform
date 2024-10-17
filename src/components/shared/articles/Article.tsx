@@ -15,7 +15,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useState } from 'react';
-import { useDeleteArticleMutation } from './articlesAPI';
+import {
+  useDeleteArticleMutation,
+  useFavoriteArticleMutation,
+  useUnFavoriteArticleMutation,
+} from './articlesAPI';
 import { toast } from 'sonner';
 
 interface ArticleProps {
@@ -34,6 +38,7 @@ export function Article({ className, article, full = false }: ArticleProps) {
     favoritesCount,
     body,
     author,
+    favorited,
   } = article;
 
   const { username, image } = author;
@@ -45,6 +50,9 @@ export function Article({ className, article, full = false }: ArticleProps) {
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 
   const [deleteArticle] = useDeleteArticleMutation();
+
+  const [favoriteArticle] = useFavoriteArticleMutation();
+  const [unFavoriteArticle] = useUnFavoriteArticleMutation();
 
   const navigate = useNavigate();
 
@@ -71,12 +79,26 @@ export function Article({ className, article, full = false }: ArticleProps) {
               {cleanText(title)}
             </h3>
           </Link>
-          <Heart
-            strokeWidth={1.2}
-            width={20}
-            height={20}
-            className="min-w-5 min-h-5 mr-1"
-          />
+          <Button
+            onClick={() => {
+              if (favorited) {
+                unFavoriteArticle({ slug, token: token! });
+              } else {
+                favoriteArticle({ slug, token: token! });
+              }
+            }}
+            className="w-0 h-0"
+            variant="ghost"
+          >
+            <Heart
+              strokeWidth={1.2}
+              width={20}
+              height={20}
+              fill={`${favorited ? 'red' : '#fff'}`}
+              stroke={`${favorited ? 'red' : '#000'}`}
+              className="min-w-5 min-h-5 mr-1"
+            />
+          </Button>
           <span>{favoritesCount}</span>
         </div>
         <TagsList

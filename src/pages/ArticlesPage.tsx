@@ -12,12 +12,18 @@ export function ArticlesPage() {
 
   const pageNumber = Number(searchParams.get('page')) || 1;
 
+  const token = localStorage.getItem('token');
+
   const {
     data: articles,
     isLoading,
     isError,
     isSuccess,
-  } = useGetArticlesQuery({ limit: 10, offset: pageNumber * 10 - 10 });
+  } = useGetArticlesQuery({
+    limit: 10,
+    offset: pageNumber * 10 - 10,
+    token: token,
+  });
 
   const total = isSuccess ? articles.articlesCount : 0;
 
