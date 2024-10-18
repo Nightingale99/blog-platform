@@ -13,7 +13,9 @@ export function AuthRequired({
 }: AuthRequiredProps) {
   const token = localStorage.getItem('token');
 
-  const { isError, isLoading } = useGetCurrentUserQuery(token!);
+  const { isError, isLoading } = useGetCurrentUserQuery(token!, {
+    skip: !token,
+  });
 
   if (isError) {
     if (sendErrorMessage) {

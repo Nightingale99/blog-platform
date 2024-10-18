@@ -17,7 +17,9 @@ export function Header({ className }: HeaderProps) {
     data: currentUser,
     isSuccess: isAuthorized,
     isFetching,
-  } = useGetCurrentUserQuery(token!);
+  } = useGetCurrentUserQuery(token!, {
+    skip: !token,
+  });
 
   const dispatch = useAppDispatch();
   return (

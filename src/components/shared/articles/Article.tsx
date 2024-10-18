@@ -45,6 +45,9 @@ export function Article({ className, article, full = false }: ArticleProps) {
   const token = localStorage.getItem('token');
   const { isSuccess: isAuth, data: currentUser } = useGetCurrentUserQuery(
     token!,
+    {
+      skip: !token,
+    },
   );
 
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
