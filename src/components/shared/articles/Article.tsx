@@ -80,6 +80,7 @@ export function Article({ className, article, full = false }: ArticleProps) {
             </h3>
           </Link>
           <Button
+            disabled={!isAuth}
             onClick={() => {
               if (favorited) {
                 unFavoriteArticle({ slug, token: token! });
