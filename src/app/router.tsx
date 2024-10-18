@@ -29,7 +29,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'articles/:slug/edit',
-        element: <ArticleEditPage />,
+        element: (
+          <AuthRequired errorMessage="Редактировать статьи могут только зарегистрированные пользователи">
+            <ArticleEditPage />
+          </AuthRequired>
+        ),
       },
       {
         path: 'sign-in',
