@@ -1,5 +1,5 @@
 import { Container } from '@/components/shared/Container';
-import { SignUpForm } from '@/components/shared/user/SignUpForm';
+import { SignUpForm } from '@/components/shared/user/SignUpForm/SignUpForm';
 
 export function SignUpPage() {
   return (

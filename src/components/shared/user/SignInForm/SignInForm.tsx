@@ -9,11 +9,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useSignInMutation } from './usersAPI';
+import { useSignInMutation } from '../usersAPI';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
+import { signInFormSchema } from './sign-in-form-schema';
 
 interface SignInFormProps {
   className?: string;
@@ -29,16 +30,8 @@ export function SignInForm({ className }: SignInFormProps) {
     },
   ] = useSignInMutation();
 
-  const formSchema = z.object({
-    email: z.string().email({ message: 'Неверный формат почты' }),
-    password: z
-      .string()
-      .min(6, { message: 'Минимальная длина пароля 6 символов' })
-      .max(40, { message: 'Максимальная длина пароля 40 символов' }),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signInFormSchema>>({
+    resolver: zodResolver(signInFormSchema),
   });
 
   const navigate = useNavigate();

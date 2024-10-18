@@ -12,9 +12,10 @@ import { cn } from '@/lib/utils.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useUpdateUserMutation } from './usersAPI';
+import { useUpdateUserMutation } from '../usersAPI';
 import { toast } from 'sonner';
 import { SignUpErrors } from '@/types/users';
+import { profileFormSchema } from './profile-form-schema';
 
 interface ProfileFormProps {
   className?: string;
@@ -35,32 +36,11 @@ export function ProfileForm({ className }: ProfileFormProps) {
         )
       : undefined;
 
-  const formSchema = z
-    .object({
-      username: z
-        .string()
-        .min(3, { message: 'Никнейм должен быть не менее 3 символов в длину' })
-        .max(20, {
-          message: 'Никнейм должен быть не более 20 символов в длину',
-        }),
-      email: z.string().email({ message: 'Неверная почта' }),
-      bio: z
-        .string({})
-        .min(3, {
-          message: 'Новый пароль должен быть не менее 6 символов в длину',
-        })
-        .max(40, {
-          message: 'Новый пароль должен быть не более 40 символов в длину',
-        }),
-      image: z.string().url({ message: 'Неверная ссылка' }),
-    })
-    .partial();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof profileFormSchema>>({
+    resolver: zodResolver(profileFormSchema),
   });
 
-  function onFormSubmit(data: z.infer<typeof formSchema>) {
+  function onFormSubmit(data: z.infer<typeof profileFormSchema>) {
     const token = localStorage.getItem('token');
     if (!token) {
       toast('Необходимо авторизоваться');

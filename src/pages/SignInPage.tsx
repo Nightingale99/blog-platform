@@ -1,5 +1,5 @@
 import { Container } from '@/components/shared/Container';
-import { SignInForm } from '@/components/shared/user/SignInForm';
+import { SignInForm } from '@/components/shared/user/SignInForm/SignInForm';
 
 export function SignInPage() {
   return (

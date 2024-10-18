@@ -1,5 +1,5 @@
 import { Container } from '@/components/shared/Container';
-import { ProfileForm } from '@/components/shared/user/ProfileForm';
+import { ProfileForm } from '@/components/shared/user/ProfileForm/ProfileForm';
 
 export function ProfilePage() {
   return (

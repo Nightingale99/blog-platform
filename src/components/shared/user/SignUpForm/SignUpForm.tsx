@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils.ts';
 import { z } from 'zod';
-import { useSignUpMutation } from './usersAPI';
+import { useSignUpMutation } from '../usersAPI';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import type { SignUpErrors } from '@/types/users';
+import { signUpFormSchema } from './sign-up-form-schema';
 
 interface SignUpFormProps {
   className?: string;
@@ -27,56 +28,30 @@ export function SignUpForm({ className }: SignUpFormProps) {
   ] = useSignUpMutation();
 
   const serverErrorWords = {
-    username: 'Никнейм уже занят',
-    email: 'Почта уже занята',
+    username: {
+      'is invalid': 'Неверный формат никнейма.',
+      'is already taken.': 'Никнейм уже занят',
+    },
+    email: {
+      'is invalid': 'Неверный формат почты.',
+      'is already taken.': 'Почта уже занята',
+    },
   };
 
   const serverErrors: string[] | undefined =
     isError && 'status' in error
-      ? Object.keys((error.data as SignUpErrors).errors).map(
-          (err) => serverErrorWords[err as keyof typeof serverErrorWords],
+      ? Object.entries((error.data as SignUpErrors).errors).map(
+          ([err, msg]) =>
+            (
+              serverErrorWords[err as keyof typeof serverErrorWords] as {
+                [key: string]: string;
+              }
+            )[msg as string],
         )
       : undefined;
 
-  const formSchema = z
-    .object({
-      username: z
-        .string({ message: 'Вы должны ввести никнейм' })
-        .min(3, { message: 'Никнейм должен быть не менее 3 символов в длину' })
-        .max(20, {
-          message: 'Никнейм должен быть не более 20 символов в длину',
-        }),
-      email: z
-        .string({ message: 'Вы должны ввести почту' })
-        .email({ message: 'Неверный формат почты' }),
-      password: z
-        .string({ required_error: 'Вы должны ввести пароль' })
-        .min(6, { message: 'Минимальная длина пароля 6 символов' })
-        .max(40, { message: 'Максимальная длина пароля 40 символов' }),
-      repeatPassword: z
-        .string({ required_error: 'Вы должны повторно ввести пароль' })
-        .min(6, { message: 'Минимальная длина пароля 6 символов' })
-        .max(40, { message: 'Максимальная длина пароля 40 символов' }),
-      agreement: z
-        .boolean({
-          required_error: 'Вы должны согласиться с условиями',
-        })
-        .refine((value) => value, {
-          message: 'Вы должны согласиться с условиями',
-        }),
-    })
-    .superRefine(({ repeatPassword, password }, ctx) => {
-      if (repeatPassword !== password) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Пароли не совпадают',
-          path: ['repeatPassword'],
-        });
-      }
-    });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpFormSchema>>({
+    resolver: zodResolver(signUpFormSchema),
   });
 
   const navigate = useNavigate();
@@ -175,8 +150,9 @@ export function SignUpForm({ className }: SignUpFormProps) {
             </FormItem>
           )}
         />
+
         {isError && 'status' in error && error.status === 422 && (
-          <p className="text-sm text-destructive">
+          <p className="text-sm text-destructive p-0">
             {serverErrors!.map((e) => (
               <>
                 <span>{e}</span>
