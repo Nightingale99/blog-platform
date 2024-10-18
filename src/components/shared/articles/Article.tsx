@@ -75,7 +75,12 @@ export function Article({ className, article, full = false }: ArticleProps) {
       <div className="flex-col space-y-1 max-w-[682px]">
         <div className="flex items-center mb-1">
           <Link to={`/articles/${slug}`}>
-            <h3 className="text-xl text-primary mr-3 text-ellipsis line-clamp-1">
+            <h3
+              className={cn(
+                'text-xl text-primary mr-3 text-ellipsis',
+                !full && 'line-clamp-1',
+              )}
+            >
               {cleanText(title)}
             </h3>
           </Link>
