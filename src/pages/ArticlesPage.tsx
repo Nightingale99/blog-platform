@@ -19,11 +19,16 @@ export function ArticlesPage() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetArticlesQuery({
-    limit: 10,
-    offset: pageNumber * 10 - 10,
-    token: token,
-  });
+  } = useGetArticlesQuery(
+    {
+      limit: 10,
+      offset: pageNumber * 10 - 10,
+      token: token,
+    },
+    {
+      pollingInterval: 10000,
+    },
+  );
 
   const total = isSuccess ? articles.articlesCount : 0;
 
