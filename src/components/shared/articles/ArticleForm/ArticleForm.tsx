@@ -70,6 +70,8 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
     if ('data' in response) {
       toast(mode === 'create' ? 'Статья успешно создана' : 'Статья обновлена');
       navigate('/');
+    } else {
+      toast('Произошла ошибка при создании или редактировании статьи');
     }
   }
 

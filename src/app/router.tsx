@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
       {
         path: 'sign-in',
         element: (
-          <UnAuthRequired errorMessage="Вы уже вошли">
+          <UnAuthRequired errorMessage="Вы авторизованы">
             <SignInPage />
           </UnAuthRequired>
         ),
@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
       {
         path: 'sign-up',
         element: (
-          <UnAuthRequired errorMessage="Вы уже зарегистрированы">
+          <UnAuthRequired errorMessage="Вы зарегистрированы">
             <SignUpPage />
           </UnAuthRequired>
         ),
