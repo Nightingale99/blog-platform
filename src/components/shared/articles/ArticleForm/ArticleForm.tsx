@@ -72,7 +72,13 @@ export function ArticleForm({
           });
     if ('data' in response) {
       toast(mode === 'create' ? 'Статья успешно создана' : 'Статья обновлена');
-      navigate('/');
+      if (mode === 'edit') {
+        navigate(`/articles/${articleData!.article.slug}`);
+      } else {
+        navigate(
+          `/articles/${(response.data! as { article: Article }).article.slug}`,
+        );
+      }
     } else {
       toast('Произошла ошибка при создании или редактировании статьи');
     }
