@@ -30,7 +30,10 @@ export const router = createBrowserRouter([
       {
         path: 'articles/:slug/edit',
         element: (
-          <AuthRequired errorMessage="Редактировать статьи могут только зарегистрированные пользователи">
+          <AuthRequired
+            showSpinner
+            errorMessage="Редактировать статьи могут только зарегистрированные пользователи"
+          >
             <ArticleEditPage />
           </AuthRequired>
         ),
@@ -38,7 +41,7 @@ export const router = createBrowserRouter([
       {
         path: 'sign-in',
         element: (
-          <UnAuthRequired errorMessage="Вы авторизованы">
+          <UnAuthRequired showSpinner errorMessage="Вы авторизованы">
             <SignInPage />
           </UnAuthRequired>
         ),
@@ -46,7 +49,7 @@ export const router = createBrowserRouter([
       {
         path: 'sign-up',
         element: (
-          <UnAuthRequired errorMessage="Вы зарегистрированы">
+          <UnAuthRequired showSpinner errorMessage="Вы зарегистрированы">
             <SignUpPage />
           </UnAuthRequired>
         ),
@@ -55,7 +58,10 @@ export const router = createBrowserRouter([
         path: 'profile',
 
         element: (
-          <AuthRequired errorMessage="Редактировать профиль могут только зарегистрированные пользователи">
+          <AuthRequired
+            showSpinner
+            errorMessage="Редактировать профиль могут только зарегистрированные пользователи"
+          >
             <ProfilePage />
           </AuthRequired>
         ),
@@ -63,7 +69,10 @@ export const router = createBrowserRouter([
       {
         path: '/new-article',
         element: (
-          <AuthRequired errorMessage="Создавать статьи могут только зарегистрированные пользователи">
+          <AuthRequired
+            showSpinner
+            errorMessage="Создавать статьи могут только зарегистрированные пользователи"
+          >
             <NewArticlePage />
           </AuthRequired>
         ),

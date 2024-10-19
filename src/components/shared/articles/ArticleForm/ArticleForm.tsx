@@ -50,6 +50,9 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
     resolver: zodResolver(articleFormSchema),
     defaultValues: {
       tagList: currentArticle?.article?.tagList || [''],
+      title: currentArticle?.article?.title || '',
+      description: currentArticle?.article?.description || '',
+      body: currentArticle?.article?.body || '',
     },
   });
 

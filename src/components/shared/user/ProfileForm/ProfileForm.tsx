@@ -38,6 +38,12 @@ export function ProfileForm({ className }: ProfileFormProps) {
 
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
+    defaultValues: {
+      username: '',
+      email: '',
+      bio: '',
+      image: '',
+    },
   });
 
   function onFormSubmit(data: z.infer<typeof profileFormSchema>) {

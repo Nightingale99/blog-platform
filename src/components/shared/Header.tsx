@@ -17,6 +17,7 @@ export function Header({ className }: HeaderProps) {
     data: currentUser,
     isSuccess: isAuthorized,
     isFetching,
+    isLoading,
   } = useGetCurrentUserQuery(token!, {
     skip: !token,
   });
@@ -39,7 +40,7 @@ export function Header({ className }: HeaderProps) {
           Realworld Blog
         </h1>
       </Link>
-      {!isAuthorized && (
+      {!isAuthorized && !isLoading && (
         <>
           <Link className="ml-auto" to="/sign-in">
             <Button variant="ghost">Войти</Button>

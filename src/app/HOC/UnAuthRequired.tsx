@@ -8,7 +8,6 @@ export interface AuthRequiredProps {
   errorMessage: string;
   spinnerSize?: 'small' | 'medium' | 'large';
   showSpinner?: boolean;
-  sendErrorMessage?: boolean;
 }
 
 export function UnAuthRequired({
@@ -16,18 +15,13 @@ export function UnAuthRequired({
   errorMessage,
   spinnerSize = 'large',
   showSpinner = true,
-  sendErrorMessage = true,
 }: AuthRequiredProps) {
   const token = localStorage.getItem('token');
 
-  const { isSuccess, isLoading } = useGetCurrentUserQuery(token!, {
-    skip: !token,
-  });
+  const { isSuccess, isLoading } = useGetCurrentUserQuery(token!);
 
   if (isSuccess) {
-    if (sendErrorMessage) {
-      toast(errorMessage);
-    }
+    toast(errorMessage);
     return <Navigate to="/" replace={true} />;
   } else if (isLoading) {
     return showSpinner ? <Spinner size={spinnerSize} /> : null;

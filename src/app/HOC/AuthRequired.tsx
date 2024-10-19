@@ -9,21 +9,16 @@ export function AuthRequired({
   errorMessage,
   showSpinner,
   spinnerSize = 'large',
-  sendErrorMessage = true,
 }: AuthRequiredProps) {
   const token = localStorage.getItem('token');
 
-  const { isError, isLoading } = useGetCurrentUserQuery(token!, {
-    skip: !token,
-  });
+  const { isSuccess, isLoading } = useGetCurrentUserQuery(token!);
 
-  if (isError) {
-    if (sendErrorMessage) {
-      toast(errorMessage);
-    }
-    return <Navigate to="/" replace={true} />;
-  } else if (isLoading) {
+  if (isLoading) {
     return showSpinner ? <Spinner size={spinnerSize} /> : null;
+  } else if (!isSuccess) {
+    toast(errorMessage);
+    return <Navigate to="/" replace={true} />;
   } else {
     return children;
   }

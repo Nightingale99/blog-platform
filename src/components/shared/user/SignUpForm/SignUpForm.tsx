@@ -52,6 +52,12 @@ export function SignUpForm({ className }: SignUpFormProps) {
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+      repeatPassword: '',
+    },
   });
 
   const navigate = useNavigate();
