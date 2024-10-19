@@ -11,48 +11,48 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   useCreateArticleMutation,
-  useGetOneArticleQuery,
   useUpdateArticleMutation,
 } from '../articlesAPI';
 import { toast } from 'sonner';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { articleFormSchema, ArticleFormValues } from './article-form-schema';
-import { Spinner } from '@/components/ui/spinner';
+import { Article } from '@/types/articles';
 
 interface ArticleFormProps {
   className?: string;
   mode: 'create' | 'edit';
+  articleData?: {
+    article: Article;
+    isLoading: boolean;
+  };
 }
 
-export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
+export function ArticleForm({
+  className,
+  mode = 'create',
+  articleData,
+}: ArticleFormProps) {
   const [createArticle] = useCreateArticleMutation();
 
   const [updateArticle] = useUpdateArticleMutation();
 
-  const location = useLocation();
-
-  const token = localStorage.getItem('token');
-
-  const { data: currentArticle, isLoading } = useGetOneArticleQuery(
-    { slug: location.pathname.split('/')[2], token: token },
-    { skip: mode === 'create' },
+  const [tags, setTags] = useState<string[]>(
+    articleData?.article?.tagList || [],
   );
-
-  const [tags, setTags] = useState<string[]>(['']);
 
   const navigate = useNavigate();
 
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(articleFormSchema),
     defaultValues: {
-      tagList: currentArticle?.article?.tagList || [''],
-      title: currentArticle?.article?.title || '',
-      description: currentArticle?.article?.description || '',
-      body: currentArticle?.article?.body || '',
+      title: articleData?.article?.title || '',
+      description: articleData?.article?.description || '',
+      body: articleData?.article?.body || '',
+      tagList: articleData?.article?.tagList || [''],
     },
   });
 
@@ -66,7 +66,7 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
       mode === 'create'
         ? await createArticle({ body: data, token: token })
         : await updateArticle({
-            slug: currentArticle!.article.slug,
+            slug: articleData!.article.slug,
             body: data,
             token: token,
           });
@@ -76,25 +76,6 @@ export function ArticleForm({ className, mode = 'create' }: ArticleFormProps) {
     } else {
       toast('Произошла ошибка при создании или редактировании статьи');
     }
-  }
-
-  useEffect(() => {
-    if (currentArticle) {
-      setTags(
-        Array.from(
-          { length: currentArticle?.article?.tagList.length || 0 },
-          () => '',
-        ),
-      );
-      form.setValue('tagList', currentArticle?.article?.tagList || ['']);
-      form.setValue('title', currentArticle?.article?.title || '');
-      form.setValue('description', currentArticle?.article?.description || '');
-      form.setValue('body', currentArticle?.article?.body || '');
-    }
-  }, [currentArticle, form]);
-
-  if (mode === 'edit' && isLoading) {
-    return <Spinner size="large" />;
   }
 
   return (
